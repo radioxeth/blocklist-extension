@@ -9,13 +9,11 @@ blockButton.addEventListener("click", () => {
     //get blocklist from storage
     chrome.storage.sync.get(["blocklist"], (result) => {
         const blocklist = result.blocklist || []
-        console.log('blocklist:', blocklist)
         // Add the new site to the blocklist if not already present
         const newSite = cleanedUrl(blocklistInput.value)
         if (newSite && !blocklist.map((url) => cleanedUrl(url)).includes(newSite)) {
             blocklist.push(newSite)
             chrome.storage.sync.set({ blocklist }, () => {
-                console.log("blocklist updated:", blocklist)
                 updateBlocklist()
             })
 
@@ -25,7 +23,6 @@ blockButton.addEventListener("click", () => {
 
 function updateRedirectUrl() {
     chrome.storage.sync.get(["redirectUrl"], (result) => {
-        console.log("Redirect URL:", result)
         const redirectUrl = result.redirectUrl ?? "https://search.brave.com/"
         redirectInput.value = redirectUrl
         redirectDisplay.innerHTML = redirectUrl
@@ -37,7 +34,6 @@ redirectButton.addEventListener("click", () => {
     const redirectUrl = redirectInput.value ?? "https://search.brave.com/"
     if (redirectUrl) {
         chrome.storage.sync.set({ redirectUrl }, () => {
-            console.log("Redirect URL updated:", redirectUrl)
             updateRedirectUrl()
         })
     }
@@ -58,7 +54,6 @@ function updateBlocklist() {
     document.getElementById("blocklist-ul").innerHTML = ""
     chrome.storage.sync.get(["blocklist"], (result) => {
         const blocklist = result.blocklist || []
-        console.log("Blocked sites:", blocklist)
         for (const site of blocklist) {
             addSiteToList(site, blocklist)
         }
@@ -86,7 +81,6 @@ function removeSiteFromBlocklist(site, blocklist, li, button) {
     const index = blocklist.indexOf(site)
     blocklist.splice(index, 1)
     chrome.storage.sync.set({ blocklist }, () => {
-        console.log("Blocked sites updated:", blocklist)
         li.remove()
         button.remove()
     })

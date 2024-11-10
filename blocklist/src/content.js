@@ -2,18 +2,12 @@
 console.log('running content.js')
 
 chrome.storage.sync.get(["blocklist"], (result) => {
-    console.log("Current URL:", cleanUrl(window.location.href))
-
     const blocklist = result.blocklist || []
-    console.log('blocklist:', blocklist)
 
     // Check if the current domain matches any in the blocked sites
     if (blocklist.map((url) => cleanUrl(url)).includes(cleanUrl(window.location.href))) {
-        console.log("Redirecting to blocked.html...")
-
         // Get the URL of the blocked.html file in the extension
         const blockedPageUrl = chrome.runtime.getURL("src/blocked/index.html")
-        console.log("Blocked Page URL:", blockedPageUrl)
         // Redirect the user
         window.location.href = blockedPageUrl
     }
