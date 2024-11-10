@@ -24,8 +24,14 @@ blockButton.addEventListener("click", () => {
 function updateRedirectUrl() {
     chrome.storage.sync.get(["redirectUrl"], (result) => {
         const redirectUrl = result.redirectUrl ?? "https://search.brave.com/"
+
+        const a = document.createElement('a')
+        a.href = redirectUrl
+        a.innerHTML = redirectUrl
+        redirectDisplay.innerHTML = ""
+        redirectDisplay.appendChild(a)
+
         redirectInput.value = redirectUrl
-        redirectDisplay.innerHTML = redirectUrl
     })
 }
 

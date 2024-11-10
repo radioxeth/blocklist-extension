@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "blocklist-extension",
+    "name": "blocklist",
     "version": "1.0",
-    "description": "Blocks access to specified websites",
+    "description": "Curate a list of blocked websites with a custom redirect page.",
     "permissions": [
         "storage",
         "tabs"
