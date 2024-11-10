@@ -1,0 +1,32 @@
+.center-div {
+    text-align: center;
+}
+
+.button-popup {
+    display: block;
+    /* Stack buttons vertically */
+    width: 200px;
+    /* Set button width for consistency */
+    margin: 10px auto;
+    /* Add spacing between buttons and center them */
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    /* Green background */
+    color: white;
+}
+
+.button-popup:hover {
+    background-color: #45a049;
+    /* Slightly darker green on hover */
+}
+
+
+ul {
+    max-height: 500px;
+    overflow-y: scroll;
+    list-style-type: none;
+}
