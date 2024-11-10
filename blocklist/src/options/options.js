@@ -1,8 +1,8 @@
 const blocklistInput = document.getElementById('blocklistInput')
 const blockButton = document.getElementById('blockButton')
-const redirectInput = document.getElementById('redirect')
+const redirectInput = document.getElementById('redirectInput')
 const redirectButton = document.getElementById('redirectButton')
-const blocklist_ul = document.getElementById('blocklist-ul')
+const redirectDisplay = document.getElementById('redirectDisplay')
 
 
 blockButton.addEventListener("click", () => {
@@ -12,23 +12,33 @@ blockButton.addEventListener("click", () => {
         console.log('blocklist:', blocklist)
         // Add the new site to the blocklist if not already present
         const newSite = cleanedUrl(blocklistInput.value)
-        if (newSite && !blocklist.includes(newSite)) {
+        if (newSite && !blocklist.map((url) => cleanedUrl(url)).includes(newSite)) {
             blocklist.push(newSite)
             chrome.storage.sync.set({ blocklist }, () => {
                 console.log("blocklist updated:", blocklist)
-                updateBlockedList()
+                updateBlocklist()
             })
 
         }
     })
 })
 
+function updateRedirectUrl() {
+    chrome.storage.sync.get(["redirectUrl"], (result) => {
+        console.log("Redirect URL:", result)
+        const redirectUrl = result.redirectUrl ?? "https://search.brave.com/"
+        redirectInput.value = redirectUrl
+        redirectDisplay.innerHTML = redirectUrl
+    })
+}
+
 redirectButton.addEventListener("click", () => {
     // set redirect url in storage
-    const redirectUrl = cleanedUrl(redirectInput.value)
+    const redirectUrl = redirectInput.value ?? "https://search.brave.com/"
     if (redirectUrl) {
         chrome.storage.sync.set({ redirectUrl }, () => {
             console.log("Redirect URL updated:", redirectUrl)
+            updateRedirectUrl()
         })
     }
 })
@@ -43,8 +53,9 @@ function cleanedUrl(url) {
     }
 }
 
-function updateBlockedList() {
+function updateBlocklist() {
     // Get existing blocked sites from storage
+    document.getElementById("blocklist-ul").innerHTML = ""
     chrome.storage.sync.get(["blocklist"], (result) => {
         const blocklist = result.blocklist || []
         console.log("Blocked sites:", blocklist)
@@ -81,4 +92,5 @@ function removeSiteFromBlocklist(site, blocklist, li, button) {
     })
 }
 
-updateBlockedList()
+updateBlocklist()
+updateRedirectUrl()
