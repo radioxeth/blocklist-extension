@@ -27,10 +27,10 @@ function updateRedirectUrl() {
 
         const a = document.createElement('a')
         a.href = redirectUrl
-        a.innerHTML = redirectUrl
+        a.innerText = redirectUrl
+        // redirectDisplay.removeChild(redirectDisplay.firstChild)
         redirectDisplay.innerHTML = ""
         redirectDisplay.appendChild(a)
-
         redirectInput.value = redirectUrl
     })
 }
