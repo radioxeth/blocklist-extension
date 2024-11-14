@@ -1,23 +1,7 @@
+import { cleanURL, EXTENSION_ID } from "../utils.js"
+
 const blockButton = document.getElementById('blockButton')
 const optionsButton = document.getElementById('optionsButton')
-
-function isValidURL(url) {
-    try {
-        new URL(url) // Will throw an error if the URL is invalid
-        return true
-    } catch (e) {
-        return false
-    }
-}
-
-function cleanURL(url) {
-    try {
-        const curl = new URL(url)
-        return `${curl.protocol}//${curl.hostname}`
-    } catch (error) {
-        return undefined
-    }
-}
 
 blockButton.addEventListener("click", () => {
     // Get the active tab in the current window
@@ -35,23 +19,45 @@ blockButton.addEventListener("click", () => {
         }
 
         const site = tab.url // Retrieve the URL of the active tab
-        if (isValidURL(site)) {
-            const cleanedUrl = cleanURL(site)
-            // Get existing blocked sites from storage
-            chrome.storage.sync.get(["blocklist"], (result) => {
-                const blocklist = result.blocklist ?? []
-                // Add the new site to the blocked list if not already present
-                if (!blocklist.includes(cleanedUrl)) {
-                    blocklist.push(cleanedUrl)
-                    chrome.storage.sync.set({ blocklist }, () => {
-                        // go to blocked page
-                        const blockedPageUrl = chrome.runtime.getURL("src/blocked/index.html")
-                        // Redirect the users tab to the blocked page
-                        chrome.tabs.update(tab.id, {
-                            url: blockedPageUrl
-                        })
-                    })
+        const cleanedUrl = cleanURL(site)
+        if (cleanedUrl) {
+            // Add a new rule to block the site and redirect
+            chrome.declarativeNetRequest.getDynamicRules((rules) => {
+                // Check if the site is already blocked by a rule
+                const existingRule = rules.find((rule) => rule.condition.urlFilter === cleanedUrl)
+                if (existingRule) {
+                    console.log(`The site ${cleanedUrl} is already blocked.`)
+                    return
                 }
+
+                // Add a new rule
+                const ruleId = rules.length ? rules[rules.length - 1].id + 1 : 1 // Get the next available rule ID
+                chrome.declarativeNetRequest.updateDynamicRules({
+                    addRules: [
+                        {
+                            id: ruleId,
+                            priority: 1,
+                            action: {
+                                type: "redirect",
+                                redirect: {
+                                    url: `chrome-extension://${EXTENSION_ID}/src/blocked/index.html` // Redirect to the blocked page
+                                }
+                            },
+                            condition: {
+                                urlFilter: cleanedUrl,
+                                resourceTypes: ["main_frame"]
+                            }
+                        }
+                    ],
+                    removeRuleIds: [] // No rules to remove
+                }, () => {
+                    console.log(`The site ${cleanedUrl} has been blocked.`)
+
+                    // Redirect the user's tab to the blocked page
+                    chrome.tabs.update(tab.id, {
+                        url: chrome.runtime.getURL("src/blocked/index.html")
+                    })
+                })
             })
         } else {
             console.error("Invalid URL:", site)

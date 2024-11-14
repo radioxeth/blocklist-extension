@@ -5,18 +5,12 @@
     "description": "Curate a list of blocked websites with a custom redirect page.",
     "permissions": [
         "storage",
-        "tabs"
+        "tabs",
+        "declarativeNetRequest",
+        "declarativeNetRequestFeedback"
     ],
-    "content_scripts": [
-        {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": [
-                "src/content.js"
-            ],
-            "run_at": "document_start"
-        }
+    "host_permissions": [
+        "<all_urls>"
     ],
     "web_accessible_resources": [
         {
@@ -28,6 +22,19 @@
             ]
         }
     ],
+    "declarative_net_request": {
+        "rule_resources": [
+            {
+                "id": "ruleset_1",
+                "enabled": true,
+                "path": "rules/blocklist_rules.json"
+            }
+        ]
+    },
+    "background": {
+        "service_worker": "src/background.js",
+        "type": "module"
+    },
     "action": {
         "default_popup": "src/popup/index.html"
     },
