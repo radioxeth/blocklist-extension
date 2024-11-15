@@ -1,3 +1,5 @@
+import { DEFAULT_REDIRECT } from '../utils.js'
+
 const homeButton = document.getElementById('homeButton')
 const backButton = document.getElementById('backButton')
 const countSpan = document.getElementById('count')
@@ -6,7 +8,7 @@ const homeSpan = document.getElementById('home')
 homeButton.addEventListener("click", () => {
     // go to home page
     chrome.storage.sync.get(["redirectUrl"], (result) => {
-        const redirectUrl = result.redirectUrl || "https://search.brave.com/"
+        const redirectUrl = result.redirectUrl || DEFAULT_REDIRECT
         window.location.href = redirectUrl
     })
 })
@@ -29,7 +31,7 @@ chrome.storage.sync.get(["redirectUrl"], (result) => {
         count--
         if (count === 0) {
             clearInterval(interval)
-            const redirectUrl = result.redirectUrl || "https://search.brave.com/"
+            const redirectUrl = result.redirectUrl || DEFAULT_REDIRECT
             window.location.href = redirectUrl
         }
         appendCountSpan.remove()
@@ -41,7 +43,7 @@ chrome.storage.sync.get(["redirectUrl"], (result) => {
 })
 
 chrome.storage.sync.get(["redirectUrl"], (result) => {
-    const redirectUrl = result.redirectUrl || "https://search.brave.com/"
+    const redirectUrl = result.redirectUrl || DEFAULT_REDIRECT
     const a = document.createElement('a')
     a.href = redirectUrl
     a.innerText = redirectUrl

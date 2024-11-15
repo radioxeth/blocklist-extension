@@ -1,7 +1,7 @@
 // On startup, load saved user rules and apply them
 chrome.runtime.onStartup.addListener(() => {
-    console.log('onStartup')
-    chrome.storage.local.get("userRules", (data) => {
+    console.log('service worker started')
+    chrome.storage.sync.get("userRules", (data) => {
         const rules = data.userRules || []
         chrome.declarativeNetRequest.updateDynamicRules({
             addRules: rules,
@@ -10,26 +10,68 @@ chrome.runtime.onStartup.addListener(() => {
     })
 })
 
-// Function to save a new rule to storage and apply it
-const saveAndApplyRule = (rule) => {
-    chrome.storage.local.get("userRules", (data) => {
-        const rules = data.userRules || []
-        rules.push(rule)
 
-        chrome.storage.local.set({ userRules: rules }, () => {
-            // Update dynamic rules with the new rule
-            chrome.declarativeNetRequest.updateDynamicRules({
-                addRules: [rule],
-                removeRuleIds: []
-            })
+function updateStorageRules() {
+    chrome.declarativeNetRequest.getDynamicRules((rules) => {
+        chrome.storage.sync.set({ userRules: rules }, () => {
+            console.log("Rules saved to storage.")
         })
     })
 }
 
+
 // Example listener for messages from the options page (optional)
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "addRule") {
-        saveAndApplyRule(message.rule)
-        sendResponse({ status: "success", message: "Rule added!" })
+        chrome.declarativeNetRequest.getDynamicRules((rules) => {
+            if (!message.rule.id) {
+                message.rule.id = rules.length ? rules[rules.length - 1].id + 1 : 1 // Get the next available rule ID
+            }
+            chrome.declarativeNetRequest.updateDynamicRules({
+                addRules: [message.rule],
+                removeRuleIds: []
+            }, () => {
+                updateStorageRules()
+                sendResponse({ success: true, message: `Rules successfully added rule.id=${message.rule.id}.` })
+            })
+        })
+        return true
     }
+})
+
+// listener for message from the options page to remove a rule
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+    if (message.type === "removeRule") {
+        chrome.declarativeNetRequest.getDynamicRules((rules) => {
+            const rule = rules.find((r) => r.id === message.ruleId)
+            if (rule) {
+                chrome.declarativeNetRequest.updateDynamicRules({
+                    addRules: [],
+                    removeRuleIds: [rule.id]
+                }, () => {
+                    updateStorageRules()
+                    sendResponse({ success: true, message: `Rule successfully removed rule.id=${rule.id}.` })
+                })
+                return true
+            } else {
+                sendResponse({ success: false, message: `Rule not found rule.id=${message.ruleId}.` })
+            }
+        })
+    }
+})
+
+// Listener to fetch the dynamic rules and send them to a page
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === "getRules") {
+
+        chrome.declarativeNetRequest.getDynamicRules((rules) => {
+            // Send the response back with the fetched rules
+            sendResponse({ success: true, rules })
+        })
+        // Indicate that we will send the response asynchronously
+        return true
+    }
+    // Default response for unknown message types
+    sendResponse({ success: false, error: "Unknown message type" })
 })

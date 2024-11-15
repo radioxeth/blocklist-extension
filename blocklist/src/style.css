@@ -2,7 +2,30 @@
     text-align: center;
 }
 
-.button-popup {
+.button-popup-block {
+    display: block;
+    /* Stack buttons vertically */
+    width: 200px;
+    height: 200px;
+    /* Set button width for consistency */
+    margin: 10px auto;
+    /* Add spacing between buttons and center them */
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* red background */
+    background-color: #f44336;
+    color: white;
+}
+
+.button-popup-block:hover {
+    background-color: #d32f2f;
+    /* Slightly darker red on hover */
+}
+
+.button-popup-options {
     display: block;
     /* Stack buttons vertically */
     width: 200px;
@@ -14,14 +37,14 @@
     cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #4CAF50;
-    /* Green background */
-    color: white;
+    background-color: #f1f1f1;
+    /* Light gray background */
+    color: black;
 }
 
-.button-popup:hover {
-    background-color: #45a049;
-    /* Slightly darker green on hover */
+.button-popup-options:hover {
+    background-color: #ddd;
+    /* Slightly darker gray on hover */
 }
 
 

@@ -1,4 +1,9 @@
-import { cleanURL, EXTENSION_ID } from '../utils.js'
+import {
+    EXTENSION_ID,
+    DEFAULT_REDIRECT,
+    cleanURL,
+    addRedirectRule
+} from '../utils.js'
 
 const blocklistInput = document.getElementById('blocklistInput')
 const blockButton = document.getElementById('blockButton')
@@ -7,23 +12,26 @@ const redirectButton = document.getElementById('redirectButton')
 const redirectDisplay = document.getElementById('redirectDisplay')
 
 blockButton.addEventListener("click", () => {
-    const cleanedUrl = cleanURL(blocklistInput.value)
-    if (cleanedUrl) {
-        saveRule(cleanedUrl)
+    const site = blocklistInput.value
+    const cleanedURL = cleanURL(site)
+    if (cleanedURL) {
+        saveRule(cleanedURL)
+    } else {
+        console.error("Invalid URL:", site)
     }
 })
 
 function updateBlocklist() {
-    // Clear the existing list
-    document.getElementById("blocklist-ul").innerHTML = ""
-
-    // Fetch dynamic rules from declarativeNetRequest
-    chrome.declarativeNetRequest.getDynamicRules((rules) => {
-        // Populate the blocklist from dynamic rules
-        for (const rule of rules) {
-            if (rule.action.type === "redirect") {
-                const site = rule.condition.urlFilter
-                addSiteToList(site, rule.id) // Pass the site and rule ID
+    chrome.runtime.sendMessage(EXTENSION_ID, { type: "getRules" }, (response) => {
+        // Redirect the user's tab to the blocked page
+        if (response.success) {
+            // Clear the existing list
+            document.getElementById("blocklist-ul").innerHTML = ""
+            for (const rule of response.rules) {
+                if (rule.action.type === "redirect") {
+                    const site = rule.condition.urlFilter
+                    addSiteToList(site, rule.id) // Pass the site and rule ID
+                }
             }
         }
     })
@@ -56,38 +64,17 @@ function removeSiteFromBlocklist(ruleId, li, button) {
     })
 }
 
-export function saveRule(url, callback) {
+export function saveRule(url) {
     // Add a new rule for the given URL
-    chrome.declarativeNetRequest.getDynamicRules((rules) => {
-        const ruleId = rules.length ? rules[rules.length - 1].id + 1 : 1
-        chrome.declarativeNetRequest.updateDynamicRules({
-            addRules: [
-                {
-                    id: ruleId,
-                    priority: 1,
-                    action: {
-                        type: "redirect",
-                        redirect: {
-                            url: `chrome-extension://${EXTENSION_ID}/src/blocked/index.html`
-                        }
-                    },
-                    condition: {
-                        urlFilter: url,
-                        resourceTypes: ["main_frame"]
-                    }
-                }
-            ],
-            removeRuleIds: [] // Don't remove any existing rules
-        }, () => {
-            // Update the UI with the new rule
-            addSiteToList(url, ruleId)
-        })
+    chrome.runtime.sendMessage(EXTENSION_ID, addRedirectRule(url), (response) => {
+        // Redirect the user's tab to the blocked page
+        updateBlocklist()
     })
 }
 
 function updateRedirectUrl() {
     chrome.storage.sync.get(["redirectUrl"], (result) => {
-        const redirectUrl = result.redirectUrl ?? "https://search.brave.com/"
+        const redirectUrl = result.redirectUrl ?? DEFAULT_REDIRECT
 
         const a = document.createElement('a')
         a.href = redirectUrl
@@ -101,7 +88,7 @@ function updateRedirectUrl() {
 
 redirectButton.addEventListener("click", () => {
     // set redirect url in storage
-    const redirectUrl = redirectInput.value ?? "https://search.brave.com/"
+    const redirectUrl = redirectInput.value ?? DEFAULT_REDIRECT
     if (redirectUrl) {
         chrome.storage.sync.set({ redirectUrl }, () => {
             updateRedirectUrl()
