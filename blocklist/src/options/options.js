@@ -23,16 +23,11 @@ blockButton.addEventListener("click", () => {
 
 function updateBlocklist() {
     chrome.runtime.sendMessage(EXTENSION_ID, { type: "getRules" }, (response) => {
-        // Redirect the user's tab to the blocked page
         if (response.success) {
-            // Clear the existing list
             document.getElementById("blocklist-ul").innerHTML = ""
-            for (const rule of response.rules) {
-                if (rule.action.type === "redirect") {
-                    const site = rule.condition.urlFilter
-                    addSiteToList(site, rule.id) // Pass the site and rule ID
-                }
-            }
+            response.rules.forEach((rule) => {
+                addSiteToList(rule.condition.urlFilter, rule.id)
+            })
         }
     })
 }
@@ -55,12 +50,12 @@ function addRemoveButton(li, ruleId) {
 
 function removeSiteFromBlocklist(ruleId, li, button) {
     // Remove the dynamic rule by ID
-    chrome.declarativeNetRequest.updateDynamicRules({
-        addRules: [], // No new rules to add
-        removeRuleIds: [ruleId] // Remove the specific rule
-    }, () => {
-        li.remove()
-        button.remove()
+    chrome.runtime.sendMessage(EXTENSION_ID, { type: "removeRule", ruleId }, (response) => {
+        if (response.success) {
+            // Remove the list item from the UI
+            li.remove()
+            button.remove()
+        }
     })
 }
 
@@ -68,7 +63,10 @@ export function saveRule(url) {
     // Add a new rule for the given URL
     chrome.runtime.sendMessage(EXTENSION_ID, addRedirectRule(url), (response) => {
         // Redirect the user's tab to the blocked page
-        updateBlocklist()
+        if (response.success) {
+            updateBlocklist()
+        }
+
     })
 }
 

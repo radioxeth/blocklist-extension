@@ -41,7 +41,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 // listener for message from the options page to remove a rule
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-
     if (message.type === "removeRule") {
         chrome.declarativeNetRequest.getDynamicRules((rules) => {
             const rule = rules.find((r) => r.id === message.ruleId)
@@ -53,18 +52,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     updateStorageRules()
                     sendResponse({ success: true, message: `Rule successfully removed rule.id=${rule.id}.` })
                 })
-                return true
+
             } else {
                 sendResponse({ success: false, message: `Rule not found rule.id=${message.ruleId}.` })
             }
         })
+        return true
     }
 })
 
 // Listener to fetch the dynamic rules and send them to a page
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "getRules") {
-
         chrome.declarativeNetRequest.getDynamicRules((rules) => {
             // Send the response back with the fetched rules
             sendResponse({ success: true, rules })
@@ -72,6 +71,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Indicate that we will send the response asynchronously
         return true
     }
-    // Default response for unknown message types
-    sendResponse({ success: false, error: "Unknown message type" })
 })
