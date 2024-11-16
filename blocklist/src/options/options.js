@@ -39,11 +39,13 @@ function addSiteToTable(site, ruleId) {
 
     // Website column
     const siteCell = document.createElement('td')
+    siteCell.colSpan = 2
     siteCell.textContent = site
     row.appendChild(siteCell)
 
     // Remove button column
     const buttonCell = document.createElement('td')
+    buttonCell.colSpan = 1
     const button = document.createElement('button')
     button.textContent = 'Remove'
     button.title = `Remove ${site} from blocklist`
