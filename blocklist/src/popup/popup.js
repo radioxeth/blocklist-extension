@@ -1,6 +1,6 @@
 import {
     EXTENSION_ID,
-    cleanURL,
+    validateUrl,
     addRedirectRule,
     BLOCKED_PAGE
 } from '../utils.js'
@@ -22,7 +22,8 @@ blockButton.addEventListener("click", () => {
             return
         }
         const site = tab.url // Retrieve the URL of the active tab
-        const cleanedURL = cleanURL(site)
+        const cleanedURL = validateUrl(site)
+        console.log("cleanedURL", cleanedURL)
         if (cleanedURL) {
             chrome.runtime.sendMessage(EXTENSION_ID, addRedirectRule(cleanedURL), () => {
                 // Redirect the user's tab to the blocked page

@@ -27,6 +27,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             if (!message.rule.id) {
                 message.rule.id = rules.length ? rules[rules.length - 1].id + 1 : 1 // Get the next available rule ID
             }
+            // check that the urlFilter isnt already in the rules
+            const urlFilters = rules.map((r) => r.condition.urlFilter)
+            if (urlFilters.includes(message.rule.condition.urlFilter)) {
+                sendResponse({ success: false, message: `Rule already exists for ${message.rule.condition.urlFilter}.` })
+                return
+            }
             chrome.declarativeNetRequest.updateDynamicRules({
                 addRules: [message.rule],
                 removeRuleIds: []

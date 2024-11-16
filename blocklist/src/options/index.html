@@ -2,27 +2,42 @@
 <html>
 
 <head>
-    <title>blocklist | options</title>
-    <link rel="stylesheet" href="../style.css">
+    <title>Blocklist | Options</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <h1>blocklist options</h1>
-    <h2>manage blocklist</h2>
-    <div>
-        <input type="text" id="blocklistInput" placeholder="Enter a website to block">
-        <button id="blockButton">add to blocklist</button>
+    <div id="modal">
+        <h1>Blocklist Options</h1>
+        <h2>Manage Blocklist</h2>
+        <hr>
         <div>
-            <ul id="blocklist-ul"></ul>
-        </div>
+            <input type="text" id="blocklistInput" placeholder="Enter a website to block">
+            <button id="blockButton">Add to Blocklist</button>
+            <div id="table-div">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Blocked Website</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blocklist-table-body">
+                        <!-- Dynamically populated rows go here -->
+                    </tbody>
 
-    </div>
-    <hr>
-    <h2>manage redirect</h2>
-    <div>
-        <input type="text" id="redirectInput" placeholder="Enter a website to redirect to">
-        <button id="redirectButton">set redirect</button>
-        <div id="redirectDisplay"></div>
+                </table>
+            </div>
+        </div>
+        <br>
+        <h2>Manage Redirect</h2>
+        <hr>
+        <div>
+            <input type="text" id="redirectInput" placeholder="Enter a website to redirect to">
+            <button id="redirectButton">Set Redirect</button>
+            <div id="redirectDisplay"></div>
+        </div>
     </div>
     <script type="module" src="options.js"></script>
 </body>

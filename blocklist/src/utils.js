@@ -1,6 +1,7 @@
 const EXTENSION_ID = chrome.runtime.id
 const BLOCKED_PAGE = chrome.runtime.getURL("src/blocked/index.html")
 const DEFAULT_REDIRECT = "https://search.brave.com/"
+
 function cleanURL(url) {
     try {
         const curl = new URL(url)
@@ -10,6 +11,29 @@ function cleanURL(url) {
         return undefined
     }
 }
+
+function validateUrl(userInput) {
+    try {
+        const allowedProtocols = ["http:", "https:"]
+
+        const parsedUrl = new URL(userInput)
+
+        // Validate protocol
+        if (!allowedProtocols.includes(parsedUrl.protocol)) {
+            throw new Error("Invalid protocol")
+        }
+
+        // Normalize and sanitize URL
+        parsedUrl.hash = "" // Remove fragment
+        parsedUrl.search = "" // Remove query
+        const sanitizedUrl = parsedUrl.href
+        console.log("Sanitized URL:", sanitizedUrl)
+        return sanitizedUrl
+    } catch (error) {
+        console.error("Invalid or unsafe URL:", error)
+    }
+}
+
 
 function addRedirectRule(url, id) {
     return {
@@ -34,6 +58,7 @@ function addRedirectRule(url, id) {
 export {
     cleanURL,
     addRedirectRule,
+    validateUrl,
     EXTENSION_ID,
     BLOCKED_PAGE,
     DEFAULT_REDIRECT
