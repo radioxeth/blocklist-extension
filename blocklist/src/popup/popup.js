@@ -1,8 +1,8 @@
 import {
     EXTENSION_ID,
-    validateAndCleanUrl,
     addRedirectRule,
-    BLOCKED_PAGE
+    BLOCKED_PAGE,
+    validateAndClean
 } from '../utils.js'
 
 const blockButton = document.getElementById('blockButton')
@@ -22,7 +22,7 @@ blockButton.addEventListener("click", () => {
             return
         }
         const site = tab.url // Retrieve the URL of the active tab
-        const cleanedURL = validateAndCleanUrl(site)
+        const cleanedURL = validateAndClean(site)
         console.log("cleanedURL", cleanedURL)
         if (cleanedURL) {
             chrome.runtime.sendMessage(EXTENSION_ID, addRedirectRule(cleanedURL), () => {
