@@ -23,8 +23,8 @@ Our extension collects the following information locally:
 4. Select the directory where you cloned the repository (`blocklist-extension`).
 5. The extension should now be loaded into Chrome and visible in the list of extensions.
 
-## Privacy Policy
-[Privacy Policy](./PRIVACY_POLICY.MD)
+## Privacy
+[Privacy Policy](./PRIVACY.MD)
 
 ## License
 [MIT License](./LICENSE.md)
