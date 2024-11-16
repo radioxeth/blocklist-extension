@@ -1,7 +1,7 @@
 import {
     EXTENSION_ID,
     DEFAULT_REDIRECT,
-    validateUrl,
+    validateAndCleanUrl,
     addRedirectRule
 } from '../utils.js'
 
@@ -14,7 +14,7 @@ const blocklistTableBody = document.getElementById('blocklist-table-body')
 
 blockButton.addEventListener('click', () => {
     const site = blocklistInput.value
-    const cleanedURL = validateUrl(site)
+    const cleanedURL = validateAndCleanUrl(site)
     if (cleanedURL) {
         saveRule(cleanedURL)
         blocklistInput.value = ''
@@ -90,7 +90,7 @@ function updateRedirectUrl() {
 }
 
 redirectButton.addEventListener('click', () => {
-    const redirectUrl = validateUrl(redirectInput.value) ?? DEFAULT_REDIRECT
+    const redirectUrl = validateAndCleanUrl(redirectInput.value) ?? DEFAULT_REDIRECT
     if (redirectUrl) {
         chrome.storage.sync.set({ redirectUrl }, () => {
             updateRedirectUrl()

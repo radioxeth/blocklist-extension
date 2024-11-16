@@ -12,7 +12,7 @@ function cleanURL(url) {
     }
 }
 
-function validateUrl(userInput) {
+function validateAndCleanUrl(userInput) {
     try {
         const allowedProtocols = ["http:", "https:"]
 
@@ -28,9 +28,11 @@ function validateUrl(userInput) {
         parsedUrl.search = "" // Remove query
         const sanitizedUrl = parsedUrl.href
         console.log("Sanitized URL:", sanitizedUrl)
-        return sanitizedUrl
+
+        return cleanURL(sanitizedUrl)
     } catch (error) {
         console.error("Invalid or unsafe URL:", error)
+        return undefined
     }
 }
 
@@ -58,7 +60,7 @@ function addRedirectRule(url, id) {
 export {
     cleanURL,
     addRedirectRule,
-    validateUrl,
+    validateAndCleanUrl,
     EXTENSION_ID,
     BLOCKED_PAGE,
     DEFAULT_REDIRECT
