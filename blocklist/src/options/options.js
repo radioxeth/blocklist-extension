@@ -46,6 +46,7 @@ function addSiteToTable(site, ruleId) {
     const buttonCell = document.createElement('td')
     const button = document.createElement('button')
     button.textContent = 'Remove'
+    button.title = `Remove ${site} from blocklist`
     button.addEventListener('click', () => {
         removeSiteFromBlocklist(ruleId, row)
     })
@@ -86,7 +87,7 @@ function updateRedirectUrl() {
 }
 
 redirectButton.addEventListener('click', () => {
-    const redirectUrl = redirectInput.value ?? DEFAULT_REDIRECT
+    const redirectUrl = validateUrl(redirectInput.value) ?? DEFAULT_REDIRECT
     if (redirectUrl) {
         chrome.storage.sync.set({ redirectUrl }, () => {
             updateRedirectUrl()
