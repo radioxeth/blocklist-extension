@@ -1,43 +1,96 @@
+import {
+    EXTENSION_ID,
+    DEFAULT_REDIRECT,
+    validateAndCleanUrl,
+    addRedirectRule
+} from '../utils.js'
+
 const blocklistInput = document.getElementById('blocklistInput')
 const blockButton = document.getElementById('blockButton')
 const redirectInput = document.getElementById('redirectInput')
 const redirectButton = document.getElementById('redirectButton')
 const redirectDisplay = document.getElementById('redirectDisplay')
+const blocklistTableBody = document.getElementById('blocklist-table-body')
 
-
-blockButton.addEventListener("click", () => {
-    //get blocklist from storage
-    chrome.storage.sync.get(["blocklist"], (result) => {
-        const blocklist = result.blocklist || []
-        // Add the new site to the blocklist if not already present
-        const newSite = cleanedUrl(blocklistInput.value)
-        if (newSite && !blocklist.map((url) => cleanedUrl(url)).includes(newSite)) {
-            blocklist.push(newSite)
-            chrome.storage.sync.set({ blocklist }, () => {
-                updateBlocklist()
-            })
-
-        }
-    })
+blockButton.addEventListener('click', () => {
+    const site = blocklistInput.value
+    const cleanedURL = validateAndCleanUrl(site)
+    if (cleanedURL) {
+        saveRule(cleanedURL)
+        blocklistInput.value = ''
+    } else {
+        console.error('Invalid URL:', site)
+    }
 })
 
+function updateBlocklist() {
+    chrome.runtime.sendMessage(EXTENSION_ID, { type: 'getRules' }, (response) => {
+        if (response.success) {
+            blocklistTableBody.innerHTML = ''
+            response.rules.forEach((rule) => {
+                addSiteToTable(rule.condition.urlFilter, rule.id)
+            })
+        }
+    })
+}
+
+function addSiteToTable(site, ruleId) {
+    const row = document.createElement('tr')
+
+    // Website column
+    const siteCell = document.createElement('td')
+    siteCell.colSpan = 2
+    siteCell.textContent = site
+    row.appendChild(siteCell)
+
+    // Remove button column
+    const buttonCell = document.createElement('td')
+    buttonCell.colSpan = 1
+    const button = document.createElement('button')
+    button.textContent = 'Remove'
+    button.title = `Remove ${site} from blocklist`
+    button.addEventListener('click', () => {
+        removeSiteFromBlocklist(ruleId, row)
+    })
+    buttonCell.appendChild(button)
+    row.appendChild(buttonCell)
+
+    blocklistTableBody.appendChild(row)
+}
+
+function removeSiteFromBlocklist(ruleId, row) {
+    chrome.runtime.sendMessage(EXTENSION_ID, { type: 'removeRule', ruleId }, (response) => {
+        if (response.success) {
+            row.remove()
+        }
+    })
+}
+
+export function saveRule(url) {
+    chrome.runtime.sendMessage(EXTENSION_ID, addRedirectRule(url), (response) => {
+        if (response.success) {
+            updateBlocklist()
+        }
+    })
+}
+
 function updateRedirectUrl() {
-    chrome.storage.sync.get(["redirectUrl"], (result) => {
-        const redirectUrl = result.redirectUrl ?? "https://search.brave.com/"
+    chrome.storage.sync.get(['redirectUrl'], (result) => {
+        const redirectUrl = result.redirectUrl ?? DEFAULT_REDIRECT
 
         const a = document.createElement('a')
         a.href = redirectUrl
-        a.innerHTML = redirectUrl
-        redirectDisplay.innerHTML = ""
-        redirectDisplay.appendChild(a)
+        a.innerText = redirectUrl
+        a.title = redirectUrl
 
+        redirectDisplay.innerHTML = ''
+        redirectDisplay.appendChild(a)
         redirectInput.value = redirectUrl
     })
 }
 
-redirectButton.addEventListener("click", () => {
-    // set redirect url in storage
-    const redirectUrl = redirectInput.value ?? "https://search.brave.com/"
+redirectButton.addEventListener('click', () => {
+    const redirectUrl = validateAndCleanUrl(redirectInput.value) ?? DEFAULT_REDIRECT
     if (redirectUrl) {
         chrome.storage.sync.set({ redirectUrl }, () => {
             updateRedirectUrl()
@@ -45,52 +98,19 @@ redirectButton.addEventListener("click", () => {
     }
 })
 
-function cleanedUrl(url) {
-    try {
-        const curl = new URL(url)
-        return `${curl.protocol}//${curl.hostname}`
-    } catch (error) {
-        console.error("Error cleaning URL:", url, error)
-        return undefined
+// add listener for input enter key in the blocklist input
+blocklistInput.addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+        blockButton.click()
     }
-}
+})
 
-function updateBlocklist() {
-    // Get existing blocked sites from storage
-    document.getElementById("blocklist-ul").innerHTML = ""
-    chrome.storage.sync.get(["blocklist"], (result) => {
-        const blocklist = result.blocklist || []
-        for (const site of blocklist) {
-            addSiteToList(site, blocklist)
-        }
-    })
-}
-
-function addSiteToList(site, blocklist) {
-    const li = document.createElement("li")
-    addRemoveButton(li, site, blocklist)
-    li.appendChild(document.createTextNode(site))
-    document.getElementById("blocklist-ul").appendChild(li)
-
-}
-
-function addRemoveButton(li, site, blocklist) {
-    const button = document.createElement("button")
-    button.textContent = "remove"
-    button.addEventListener("click", () => {
-        removeSiteFromBlocklist(site, blocklist, li, button)
-    })
-    li.appendChild(button)
-}
-
-function removeSiteFromBlocklist(site, blocklist, li, button) {
-    const index = blocklist.indexOf(site)
-    blocklist.splice(index, 1)
-    chrome.storage.sync.set({ blocklist }, () => {
-        li.remove()
-        button.remove()
-    })
-}
+// add listener for input enter key in the redirect input
+redirectInput.addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+        redirectButton.click()
+    }
+})
 
 updateBlocklist()
 updateRedirectUrl()

@@ -2,17 +2,23 @@
 <html>
 
 <head>
-    <title>blocklist | blocked</title>
+    <title>Blocklist | Blocked</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <h1>blocked!</h1>
-    <p>you should reconsider...</p>
-    <button id="backButton">go back</button>
-    <button id="homeButton">go home</button>
-    <hr>
-    <p>redirect to <i><span id="home"></span></i> in <strong><span id="count"></span></strong> seconds...</p>
-    <script src="blocked.js"></script>
+    <div id="modal">
+        <h1>Blocked!</h1>
+        <p>You should reconsider...</p>
+        <div>
+            <button id="backButton" title="Back">Back</button>
+            <button id="homeButton" title="Home">Home</button>
+        </div>
+        <hr>
+        <p><i>Redirecting to <span id="home"></span> in <strong><span id="count"></span></strong> seconds...</i></p>
+    </div>
+    <script type="module" src="blocked.js"></script>
 </body>
 
 </html>

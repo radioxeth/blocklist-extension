@@ -1,0 +1,51 @@
+.center-div {
+    text-align: center;
+
+}
+
+.button-popup-block {
+    display: block;
+    /* Stack buttons vertically */
+    width: 200px;
+    height: 200px;
+    /* Set button width for consistency */
+    margin: 10px auto;
+    /* Add spacing between buttons and center them */
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* red background */
+    background-color: #FF0000;
+    color: white;
+    border-radius: 3px;
+}
+
+.button-popup-block:hover {
+    background-color: #cc0000;
+    /* Slightly darker red on hover */
+}
+
+.button-popup-options {
+    display: block;
+    /* Stack buttons vertically */
+    width: 200px;
+    /* Set button width for consistency */
+    margin: 10px auto;
+    /* Add spacing between buttons and center them */
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    /* Light gray background */
+    color: black;
+    border-radius: 3px;
+}
+
+.button-popup-options:hover {
+    background-color: #ddd;
+    /* Slightly darker gray on hover */
+}
