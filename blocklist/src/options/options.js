@@ -79,6 +79,7 @@ function updateRedirectUrl() {
         const a = document.createElement('a')
         a.href = redirectUrl
         a.innerText = redirectUrl
+        a.title = redirectUrl
 
         redirectDisplay.innerHTML = ''
         redirectDisplay.appendChild(a)
