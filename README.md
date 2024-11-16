@@ -24,7 +24,7 @@ Our extension collects the following information locally:
 5. The extension should now be loaded into Chrome and visible in the list of extensions.
 
 ## Privacy
-[Privacy Policy](./PRIVACY.MD)
+[Privacy Policy](./PRIVACY.md)
 
 ## License
 [MIT License](./LICENSE.md)
