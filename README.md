@@ -1,4 +1,4 @@
-# Blocklist Extension
+# BlockList Extension
 
 ## Introduction
 This is a simple extension to add websites to a list of domains that will redirect to a specified website.
