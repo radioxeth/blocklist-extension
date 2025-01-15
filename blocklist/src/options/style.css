@@ -1,7 +1,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #222;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -10,7 +11,7 @@ body {
 }
 
 #modal {
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.2);
     width: 90%;
     max-width: 500px;
     max-height: 90%;
@@ -54,6 +55,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background-color: #bbb;
 }
 
 #table-div {
@@ -76,8 +78,8 @@ th {
 
 td button {
     padding: 5px 10px;
-    background-color: #FF0000;
-    color: white;
+    background-color: #bb2222;
+    color: #ddd;
     border: none;
     border-radius: 3px;
     cursor: pointer;
@@ -85,5 +87,5 @@ td button {
 }
 
 td button:hover {
-    background-color: #cc0000;
+    background-color: #992222;
 }

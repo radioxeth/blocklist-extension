@@ -1,7 +1,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #222;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -9,17 +10,17 @@ body {
 }
 
 #modal {
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.2);
     width: 90%;
     max-width: 500px;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
     text-align: center;
 }
 
 h1 {
-    color: #FF0000;
+    color: #bb2222;
     margin-bottom: 20px;
 }
 
@@ -44,4 +45,8 @@ button:hover {
 
 i {
     color: #666;
+}
+
+a {
+    color: #0056b3;
 }
