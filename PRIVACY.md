@@ -1,6 +1,6 @@
 ### Data Privacy Policy for Google Developer Store
 
-**Effective Date:** 2024-11-15
+**Effective Date:** 2025-01-15
 
 ---
 
