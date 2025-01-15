@@ -106,7 +106,7 @@ We may update this privacy policy from time to time. Any changes will be posted 
 
 ### 10. **Contact Us**
 
-If you have any questions about this privacy policy or the extension, please contact us at [Your Email Address].
+If you have any questions about this privacy policy or the extension, please contact us at developer@nad27.net.
 
 ---
 
