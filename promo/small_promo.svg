@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="440"
+   height="280"
+   viewBox="0 0 440 280"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="small_promo.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   inkscape:export-filename="small_promo.png"
+   inkscape:export-xdpi="103.46805"
+   inkscape:export-ydpi="103.46805"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     showguides="false"
+     inkscape:zoom="2.0354574"
+     inkscape:cx="250.31229"
+     inkscape:cy="131.66574"
+     inkscape:window-width="1920"
+     inkscape:window-height="1002"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1">
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8"
+       x="-0.0097476577"
+       y="-0.016239229"
+       width="1.0194953"
+       height="1.0324785">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.6015039"
+         id="feGaussianBlur8" />
+    </filter>
+  </defs>
+  <rect
+     style="opacity:1;fill:#222222;fill-opacity:1;stroke:#bb2222;stroke-width:0.11696;stroke-linecap:round"
+     id="rect6"
+     width="439.88306"
+     height="279.88303"
+     x="0.058480006"
+     y="0.058480006" />
+  <g
+     id="g4"
+     inkscape:label="g4"
+     style="fill:#ffffff;filter:url(#filter8)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:144px;font-family:'Bauhaus 93';-inkscape-font-specification:'Bauhaus 93, ';text-align:center;text-anchor:middle;opacity:0.85;fill:#ffffff;fill-opacity:1;stroke:#bb2222;stroke-width:0.117;stroke-linecap:round"
+       x="329.77335"
+       y="258.44913"
+       id="text6"
+       inkscape:label="list"><tspan
+         sodipodi:role="line"
+         id="tspan6"
+         x="329.77335"
+         y="258.44913">List</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:144px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS';text-align:center;text-anchor:middle;opacity:0.85;fill:#ffffff;stroke:#bb2222;stroke-width:0.117;stroke-linecap:round"
+       x="191.69131"
+       y="116.03506"
+       id="text4"
+       inkscape:label="block"><tspan
+         sodipodi:role="line"
+         id="tspan4"
+         x="191.69131"
+         y="116.03506"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:144px;font-family:'Bauhaus 93';-inkscape-font-specification:'Bauhaus 93, ';fill:#ffffff">Block</tspan></text>
+  </g>
+  <g
+     id="g8"
+     inkscape:label="g4">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:144px;font-family:'Bauhaus 93';-inkscape-font-specification:'Bauhaus 93, ';text-align:center;text-anchor:middle;opacity:0.85;fill:#007bff;fill-opacity:1;stroke:#bb2222;stroke-width:0.117;stroke-linecap:round"
+       x="329.77335"
+       y="258.44913"
+       id="text7"
+       inkscape:label="list"><tspan
+         sodipodi:role="line"
+         id="tspan7"
+         x="329.77335"
+         y="258.44913">List</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:144px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS';text-align:center;text-anchor:middle;opacity:0.85;fill:#bb2222;stroke:#bb2222;stroke-width:0.117;stroke-linecap:round"
+       x="191.69131"
+       y="116.03506"
+       id="text8"
+       inkscape:label="block"><tspan
+         sodipodi:role="line"
+         id="tspan8"
+         x="191.69131"
+         y="116.03506"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:144px;font-family:'Bauhaus 93';-inkscape-font-specification:'Bauhaus 93, '">Block</tspan></text>
+  </g>
+</svg>
