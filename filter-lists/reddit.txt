@@ -1,0 +1,7 @@
+! Title: Reddit BlockList
+! Description: Blocks Reddit
+! Updated: 2025-04-18
+
+||reddit.com^
+||www.reddit.com^
+||old.reddit.com^
